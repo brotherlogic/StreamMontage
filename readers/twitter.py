@@ -4,6 +4,8 @@
 #  user: username
 #  pwd : password
 
+import os
+
 # Read the settings
 lines = open('twitter.settings','r').readlines()
 for line in lines:
@@ -13,4 +15,9 @@ for line in lines:
         pwd = line.strip()[4:]
 
 
-url = "http://api.twitter.com/1/statuses/friends_timeline"
+url = "http://api.twitter.com/1/statuses/friends_timeline.xml?count=200"
+
+#Hack for now - use curl to pull the timeline
+for line in os.popen('curl -s -u ' + user + ':' + pwd + ' ' + url).readlines():
+    if line.strip().startswith('<text>'):
+        print line.strip()[6:-7]
