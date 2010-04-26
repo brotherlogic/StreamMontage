@@ -1,4 +1,6 @@
-import os,pkgutil,filters
+import os,re
+
+smatch = re.compile('\s(\d*x\d*)\s')
 
 def read_filters():
     filters = []
@@ -12,16 +14,33 @@ filters = read_filters()
 # 1 - download all the images
 allfiles = []
 for reader in os.listdir('readers'):
-
-    lines = ['Hello','Goodbye','http://donkey.jpeg']
+    if reader.endswith('.py'):
+        #lines = os.popen('python readers/' + reader)
+        lines = []
     
-    for line in lines:
-        for filter in filters:
-            results = os.popen('python filters/' + filter + ' "' + line + '"').readlines()
-            for res in results:
-                allfiles.append(res.strip())
+        for line in lines:
+            for filter in filters:
+                results = os.popen('python filters/' + filter + ' "' + line + '"').readlines()
+                for res in results:
+                    allfiles.append(res.strip())
 
 
-print allfiles
+for f in allfiles:
+    os.popen('wget -c ' + f + ' -P downloads/').readlines()
+
+for f in os.listdir('downloads/'):
+
+    for match in smatch.findall(os.popen('identify downloads/' + f).readlines()[0]):
+
+        (x,y) = match.split('x')
+
+        maxd = 0
+        if int(x) > int(y):
+            maxd = int(y)
+        else:
+            maxd = int(x)
+
+
+        os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 120x120 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
     
 
