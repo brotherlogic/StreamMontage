@@ -1,6 +1,6 @@
 import re,sys
 
-matcher = re.compile('(http.*?jpeg)')
+matcher = re.compile('(http.*?jpe?g)')
 
 def filter(line):
     matches = matcher.findall(line)
