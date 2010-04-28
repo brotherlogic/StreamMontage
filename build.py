@@ -15,8 +15,7 @@ filters = read_filters()
 allfiles = []
 for reader in os.listdir('readers'):
     if reader.endswith('.py'):
-        #lines = os.popen('python readers/' + reader)
-        lines = []
+        lines = os.popen('python readers/' + reader)
     
         for line in lines:
             for filter in filters:
@@ -29,18 +28,19 @@ for f in allfiles:
     os.popen('wget -c ' + f + ' -P downloads/').readlines()
 
 for f in os.listdir('downloads/'):
+    if not f.endswith('square.jpg'):
+        for match in smatch.findall(os.popen('identify downloads/' + f).readlines()[0]):
 
-    for match in smatch.findall(os.popen('identify downloads/' + f).readlines()[0]):
-
-        (x,y) = match.split('x')
-
-        maxd = 0
-        if int(x) > int(y):
-            maxd = int(y)
-        else:
-            maxd = int(x)
+            (x,y) = match.split('x')
+            
+            maxd = 0
+            if int(x) > int(y):
+                maxd = int(y)
+            else:
+                maxd = int(x)
 
 
-        os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 120x120 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
+            os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 256x256 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
     
 
+os.popen('python make_image.py').readlines()
