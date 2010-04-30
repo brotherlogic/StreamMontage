@@ -1,6 +1,12 @@
-image_dim = (2560,1024)
+image_dim = [2560,1024]
 
-iconsize = 256
+for line in open('image.settings').readlines():
+    if line.startswith('height'):
+        image_dim[1] = int(line.strip()[7:])
+    elif line.startswith('width'):
+        image_dim[0] = int(line.strip()[6:])
+
+iconsize = 128
 
 num_icons = (image_dim[0]/iconsize)*(image_dim[1]/iconsize)
 
@@ -14,7 +20,7 @@ from random import choice
 while len(files) < num_icons:
     files.append(choice(files))
 
-command = 'montage -geometry 256x256+0+0 -tile ' + `image_dim[0]/iconsize` + 'x' + `image_dim[1]/iconsize`
+command = 'montage -geometry 128x128+0+0 -tile ' + `image_dim[0]/iconsize` + 'x' + `image_dim[1]/iconsize`
 
 for file in files:
     command += " " + file

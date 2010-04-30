@@ -40,7 +40,7 @@ for f in os.listdir('downloads/'):
                 maxd = int(x)
 
 
-            os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 256x256 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
+            os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 128x128 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
     
 
 os.popen('python make_image.py').readlines()
