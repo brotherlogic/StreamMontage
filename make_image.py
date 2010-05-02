@@ -23,7 +23,7 @@ while len(files) < num_icons:
 command = 'montage -geometry 128x128+0+0 -tile ' + `image_dim[0]/iconsize` + 'x' + `image_dim[1]/iconsize`
 
 for file in files:
-    command += " " + file
+    command += ' "' + file + '"'
 
 command += " " + "out.jpg"
 

@@ -25,11 +25,11 @@ for reader in os.listdir('readers'):
 
 
 for f in allfiles:
-    os.popen('wget -c ' + f + ' -P downloads/').readlines()
+    os.popen('wget -q -c "' + f + '" -P downloads/').readlines()
 
 for f in os.listdir('downloads/'):
     if not f.endswith('square.jpg'):
-        for match in smatch.findall(os.popen('identify downloads/' + f).readlines()[0]):
+        for match in smatch.findall(os.popen('identify "downloads/' + f +'"').readlines()[0]):
 
             (x,y) = match.split('x')
             
@@ -40,7 +40,7 @@ for f in os.listdir('downloads/'):
                 maxd = int(x)
 
 
-            os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 128x128 downloads/' + f + ' downloads/' + f + '.square.jpg').readlines()
+            os.popen('convert -gravity Center -crop ' + `maxd` + 'x' + `maxd` + '+0+0 -resize 128x128 "downloads/' + f + '" "downloads/' + f + '.square.jpg"').readlines()
     
 
 os.popen('python make_image.py').readlines()
